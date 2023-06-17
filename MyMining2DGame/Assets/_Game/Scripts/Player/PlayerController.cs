@@ -9,12 +9,14 @@ namespace DinoMining
     public class PlayerController : MonoBehaviour, IPlayerController
     {
         public PlayerConfig Config;
+        public Transform GraphicContainer;
         
         #region Internal
         private PlayerInput input;
         private FrameInput frameInput;
         private float baseSpeed;
         private float speedScaleSprint;
+        private Camera mainCamera;
         [SerializeField, Foldout("Status")] private bool canInteract;
         [SerializeField, Foldout("Status")] private bool canMine;
         [SerializeField, Foldout("Status")] private bool canShoot;
@@ -45,24 +47,25 @@ namespace DinoMining
         protected virtual void Awake()
         {
             input = GetComponent<PlayerInput>();
+            this.mainCamera = Camera.main;
         }
         protected virtual void Start()
         {
-            GatherStats();
+            InitPlayer();
         }
         protected virtual void Update()
         {
             GatherInput();
 
+            HandleFaceToMouse();
             HandleMove();
             HandleShoot();
             HandleInteract();
             HandleMine();
         }
-        protected virtual void GatherStats()
+        protected virtual void InitPlayer()
         {
             CurrentType = Config.InitPlayerType;
-            GatherPlayerStatByType(CurrentType);
         }
         protected virtual void GatherPlayerStatByType(ePlayerType type)
         {
@@ -82,6 +85,20 @@ namespace DinoMining
         {
             OnPlayerTypeChanged?.Invoke(Config.Stats[newType]);
             GatherPlayerStatByType(newType);
+        }
+        protected virtual void HandleFaceToMouse()
+        {
+            var mousePosition = this.mainCamera.ScreenToWorldPoint(this.frameInput.MousePosScreenSpace);
+            int currentFacingDirection = GraphicContainer.localScale.x > 0 ? 1 : -1;
+            int desiredFacingDirection = mousePosition.x > transform.position.x ? 1 : -1;
+
+            if (currentFacingDirection == desiredFacingDirection)
+                return;
+            
+            var scale = GraphicContainer.localScale;
+            scale.x = desiredFacingDirection;
+
+            GraphicContainer.localScale = scale;
         }
         protected virtual void HandleMove()
         {

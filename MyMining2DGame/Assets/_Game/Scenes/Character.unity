@@ -624,6 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Config: {fileID: 11400000, guid: d6f807986047a5d4193a8e6b926d16c3, type: 2}
+  GraphicContainer: {fileID: 847591334}
   canInteract: 0
   canMine: 0
   canShoot: 0
