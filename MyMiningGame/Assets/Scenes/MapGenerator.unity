@@ -236,6 +236,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ea1bf98d3f04c488f84b5b6aa9ae69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Parameters:
+    GridSize: 32
+    SplitAxes:
+      x: 1
+      y: 1
+      z: 1
+    UseParentLayer: 1
+    UseParentStaticFlag: 1
+    UseParentMeshRendererSettings: 1
+    GenerateColliders: 1
+    UseConvexColliders: 0
   WallsMeshFilter: {fileID: 1779018497}
   CellMeshFilter: {fileID: 1349248977}
   mapMat: {fileID: 2100000, guid: 7c279be8631d4d147a73ea4fbb97b818, type: 2}
@@ -251,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412b2e2fdee840046b922abc575b83b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapWorldPosition: {x: 0, y: 2.5, z: 0}
+  MapWorldPosition: {x: 0, y: 4.95, z: 0}
   Width: 200
   Height: 200
   CellSize: 1
@@ -420,7 +431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1581001129
 Transform:
   m_ObjectHideFlags: 0
@@ -616,7 +627,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b35fedfa1def0124dbff26dfa5b5e0fc, type: 2}
+  - {fileID: 2100000, guid: 7c279be8631d4d147a73ea4fbb97b818, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

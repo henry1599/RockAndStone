@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MeshSplit.Scripts;
+using System.Linq;
 
 namespace UnknownGame.Managers
 {
     public class MeshGenerator : MonoBehaviour
     {
         public SquareGrid Grid;
+        public MeshSplitParameters Parameters;
         public MeshFilter WallsMeshFilter;
         public MeshFilter CellMeshFilter;
         public Material mapMat;
@@ -18,11 +21,14 @@ namespace UnknownGame.Managers
         Dictionary<int, List<Triangle>> triangleDict = new();
         List<List<int>> outlines = new();
         HashSet<int> checkedVertices = new();
+        private GameObject combinedMeshObject;
         private List<GameObject> meshes = new List<GameObject>();
         float chunkSize = 10f;
         int[,] map;
         float squareSize;
         Mesh ceilMesh, wallMesh;
+        MeshRenderer finalMeshRenderer;
+        private List<GameObject> Children = new();
         public void GenerateMesh(int[,] map, float squareSize, Vector3 worldPosition, float wallHeight)
         {
             this.map = map;
@@ -36,6 +42,7 @@ namespace UnknownGame.Managers
             CreateCeilMesh();
             CreateWallMesh(wallHeight);
             var finalMesh = CombineMeshes(this.CellMeshFilter, this.WallsMeshFilter);
+            SplitMeshes(finalMesh, this.finalMeshRenderer);
         }
 
         void CreateCeilMesh()
@@ -94,16 +101,6 @@ namespace UnknownGame.Managers
             this.wallMesh.triangles = wallTriangles.ToArray();
             this.wallMesh.RecalculateNormals();
 
-            // int tileAmount = 10;
-            // Vector2[] uvs = new Vector2[wallVertices.Count];
-            // for (int i = 0; i < wallVertices.Count; i++)
-            // {
-            //     float percentX = 0.5f * tileAmount;
-            //     float percentY = 0.5f * tileAmount;
-            //     uvs[i] = new(percentX, percentY);
-            // }
-            // WallsMeshFilter.mesh.uv = uvs;
-
             MeshCollider wallCollider = WallsMeshFilter.gameObject.GetComponent<MeshCollider>();
             if (wallCollider == null)
             {
@@ -118,24 +115,16 @@ namespace UnknownGame.Managers
         }
         Mesh CombineMeshes(params MeshFilter[] meshFilters)
         {
-            // Create a new combined Mesh
             Mesh combinedMesh = new Mesh();
-
-            // Prepare CombineInstance array
             CombineInstance[] combineInstances = new CombineInstance[meshFilters.Length];
 
             for (int i = 0; i < meshFilters.Length; i++)
             {
                 MeshFilter meshFilter = meshFilters[i];
 
-                // Get the Mesh from the MeshFilter
                 Mesh mesh = meshFilter.sharedMesh;
-
-                // Create a new CombineInstance
                 combineInstances[i].mesh = mesh;
                 combineInstances[i].transform = meshFilter.transform.localToWorldMatrix;
-
-                // Optionally, you may want to destroy the original GameObjects if you no longer need them
                 Destroy(meshFilter.gameObject);
             }
 
@@ -143,39 +132,90 @@ namespace UnknownGame.Managers
             combinedMesh.CombineMeshes(combineInstances);
 
             // Create a new GameObject to hold the combined mesh
-            GameObject combinedGameObject = new GameObject("CombinedMesh");
-            combinedGameObject.transform.SetParent(transform);
-            MeshFilter combinedMeshFilter = combinedGameObject.AddComponent<MeshFilter>();
-            MeshRenderer combinedMeshRenderer = combinedGameObject.AddComponent<MeshRenderer>();
+            this.combinedMeshObject = new GameObject("CombinedMesh");
+            this.combinedMeshObject.transform.SetParent(transform);
+            MeshFilter combinedMeshFilter = this.combinedMeshObject.AddComponent<MeshFilter>();
+            this.finalMeshRenderer = this.combinedMeshObject.AddComponent<MeshRenderer>();
 
             combinedMeshFilter.sharedMesh = combinedMesh;
-            combinedMeshRenderer.material = this.mapMat;
+            this.finalMeshRenderer.material = this.mapMat;
             return combinedMesh;
-            // Set any additional properties or materials for the combined MeshRenderer as needed
-
-            // var combinedMeshVertices = combinedMesh.vertices;
-            // int tileAmount = 10;
-            // Vector2[] uvs = new Vector2[this.ceilVertices.Count];
-            // for (int i = 0; i < this.ceilVertices.Count; i++)
-            // {
-            //     float percentX = Mathf.InverseLerp(- map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, combinedMeshVertices[i].x) * tileAmount;
-            //     float percentY = Mathf.InverseLerp(- map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, combinedMeshVertices[i].z) * tileAmount;
-            //     uvs[i] = new(percentX, percentY);
-            // }
-            // combinedMesh.uv = uvs;
         }
-        void SplitMeshes(Mesh mesh)
+        private void SplitMeshes(Mesh mesh, MeshRenderer rend)
         {
-            
-            // create a mesh splitter with some parameters (see MeshSplitParameters.cs for default settings)
-            // var meshSplitter = new MeshSplitter(new MeshSplitParameters
-            // {
-            //     GridSize = 32,
-            //     GenerateColliders = true
-            // });
+            DestroyChildren();
+            var meshSplitter = new MeshSplitter(Parameters, false);
+            var subMeshData = meshSplitter.Split(mesh);
 
-            // // split mesh into submeshes assigned to points
-            // var subMeshes = meshSplitter.Split(mesh);
+            foreach (var (gridPoint, m) in subMeshData)
+            {
+                if (m.vertexCount > 0)
+                    CreateChild(gridPoint, m, rend, this.combinedMeshObject.transform);
+            }
+            var meshFilter = this.combinedMeshObject.GetComponent<MeshFilter>();
+            var meshRend = this.combinedMeshObject.GetComponent<MeshRenderer>();
+            Destroy(meshFilter);
+            Destroy(meshRend);
+        }
+        private void DestroyChildren()
+        {
+            // find child submeshes which are not in child list
+            var unassignedSubMeshes = GetComponentsInChildren<MeshRenderer>()
+                .Where(child => child.name.Contains("SubMesh") && !Children.Contains(child.gameObject));
+
+            foreach (var subMesh in unassignedSubMeshes)
+            {
+                Children.Add(subMesh.gameObject);
+            }
+
+            foreach (var t in Children)
+            {
+                // destroy mesh
+                DestroyImmediate(t.GetComponent<MeshFilter>().sharedMesh);
+                DestroyImmediate(t);
+            }
+
+            Children.Clear();
+        }
+
+        private void CreateChild(Vector3Int gridPoint, Mesh mesh, MeshRenderer rend, Transform parent)
+        {
+            var newGameObject = new GameObject
+            {
+                name = $"SubMesh {gridPoint}"
+            };
+        
+            newGameObject.transform.SetParent(parent, false);
+            if (Parameters.UseParentLayer)
+            {
+                newGameObject.layer = gameObject.layer;
+            }
+            if (Parameters.UseParentStaticFlag)
+            {
+                newGameObject.isStatic = gameObject.isStatic;
+            }
+            
+            // assign the new mesh to this submeshes mesh filter
+            var newMeshFilter = newGameObject.AddComponent<MeshFilter>();
+            newMeshFilter.sharedMesh = mesh;
+
+            var newMeshRenderer = newGameObject.AddComponent<MeshRenderer>();
+            if (Parameters.UseParentMeshRendererSettings && this.finalMeshRenderer)
+            {
+                newMeshRenderer.sharedMaterial = this.finalMeshRenderer.sharedMaterial;
+                newMeshRenderer.sortingOrder = this.finalMeshRenderer.sortingOrder;
+                newMeshRenderer.sortingLayerID = this.finalMeshRenderer.sortingLayerID;
+                newMeshRenderer.shadowCastingMode = this.finalMeshRenderer.shadowCastingMode;
+            }
+
+            if (Parameters.GenerateColliders)
+            {
+                var meshCollider = newGameObject.AddComponent<MeshCollider>();
+                meshCollider.convex = Parameters.UseConvexColliders;
+                meshCollider.sharedMesh = mesh;
+            }
+            
+            Children.Add(newGameObject);
         }
         void TriangualateSquare(Square square)
         {
