@@ -38,6 +38,7 @@ namespace DinoMining
     public class PlayerStat
     {
         public eGunType PrimaryWeaponType;
+        public GunConfig GunStat;
         public RuntimeAnimatorController AnimatorController;
         public float BaseSpeed = 10;
         public float SpeedScaleSprint = 1;

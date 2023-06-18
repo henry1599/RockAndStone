@@ -10,6 +10,8 @@ namespace DinoMining
         public SpriteRenderer GunRRenderer;
         public Transform GunLGraphic; 
         public Transform GunRGraphic; 
+        public Transform ShootPointL;
+        public Transform ShootPointR;
         [SerializeField] protected int leftSortingOrderGunL;
         [SerializeField] protected int rightSortingOrderGunL;
         [SerializeField] protected int leftSortingOrderGunR;

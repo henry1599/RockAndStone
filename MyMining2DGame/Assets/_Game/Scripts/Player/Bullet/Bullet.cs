@@ -6,7 +6,7 @@ namespace DinoMining
 {
     public class Bullet : MonoBehaviour
     {
-        [SerializeField] protected Rigidbody rb;
+        [SerializeField] protected Rigidbody2D rb2D;
         public virtual void Setup() {}
     }
 }

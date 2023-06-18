@@ -73,8 +73,9 @@ namespace DinoMining
             {
                 var holderPosition = Config.Stats[CurrentType].GunHolderPosition;
                 var gunType = Config.Stats[CurrentType].PrimaryWeaponType;
+                var gunConfig = Config.Stats[CurrentType].GunStat;
                 this.gunHolder = Instantiate(holder, holderPosition, Quaternion.identity, transform);
-                this.gunHolder.Setup(CurrentType, gunType);
+                this.gunHolder.Setup(CurrentType, gunType, gunConfig);
             }
         }
         protected virtual void GatherPlayerStatByType(ePlayerType type)
@@ -150,7 +151,10 @@ namespace DinoMining
         protected virtual void HandleShoot()
         {
             if (!this.canShoot)
+            {
+                this.gunHolder.StopShooting();
                 return;
+            }
             this.gunHolder.Shoot();
             OnShoot?.Invoke();
         }

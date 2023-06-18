@@ -8,6 +8,7 @@ namespace DinoMining
     {
         public SpriteRenderer GunRenderer;
         public Transform GunGraphic;
+        public Transform ShootPoint;
         [SerializeField] protected int leftSortingOrder;
         [SerializeField] protected int rightSortingOrder;
         public override void Flip(bool isFacingLeft)
