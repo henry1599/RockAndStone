@@ -7,11 +7,21 @@ namespace DinoMining
     public class Gun : MonoBehaviour
     {
         [SerializeField] protected Bullet BulletPrefab;
+        protected Transform[] shootingPoints;
         protected GunConfig config;
         protected float startShootTime;
         protected bool isShooting;
-        public virtual void Setup(GunConfig gunConfig) { this.config = gunConfig; }
-        public virtual void Shoot() { this.isShooting = true; }
+        protected Vector2 mousePosition;
+        public virtual void Setup(GunConfig gunConfig, params Transform[] shootingPoints) 
+        { 
+            this.config = gunConfig; 
+            this.shootingPoints = shootingPoints;
+        }
+        public virtual void Shoot(Vector2 mousePos) 
+        { 
+            this.isShooting = true; 
+            this.mousePosition = mousePos;
+        }
         public virtual void StopShooting() { this.isShooting = false; }
     }
 }

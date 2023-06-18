@@ -155,7 +155,7 @@ namespace DinoMining
                 this.gunHolder.StopShooting();
                 return;
             }
-            this.gunHolder.Shoot();
+            this.gunHolder.Shoot(this.mainCamera.ScreenToWorldPoint(this.frameInput.MousePosScreenSpace));
             OnShoot?.Invoke();
         }
     }

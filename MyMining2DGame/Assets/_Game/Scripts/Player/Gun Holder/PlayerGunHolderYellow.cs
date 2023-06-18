@@ -16,6 +16,11 @@ namespace DinoMining
         [SerializeField] protected int rightSortingOrderGunL;
         [SerializeField] protected int leftSortingOrderGunR;
         [SerializeField] protected int rightSortingOrderGunR;
+        public override void Setup(ePlayerType playerType, eGunType gunType, GunConfig gunConfig)
+        {
+            base.Setup(playerType, gunType, gunConfig);
+            ThisGun.Setup(gunConfig, ShootPointL, ShootPointR);
+        }
         public override void Flip(bool isFacingLeft)
         {
             var scale = GunLGraphic.localScale;
