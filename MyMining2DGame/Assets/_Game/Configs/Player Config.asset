@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f478072b626d7904ba64967aaed5b875, type: 3}
   m_Name: Player Config
   m_EditorClassIdentifier: 
-  InitPlayerType: 3
+  InitPlayerType: 0
   Stats:
     reorderableList:
       canAdd: 1
@@ -39,22 +39,26 @@ MonoBehaviour:
     _keyValues: 01000000000000000200000003000000
     _keys: 01000000000000000200000003000000
     _values:
-    - AnimatorController: {fileID: 9100000, guid: abb8c87af589e2243b88c89e35d0518d, type: 2}
+    - PrimaryWeaponType: 0
+      AnimatorController: {fileID: 9100000, guid: abb8c87af589e2243b88c89e35d0518d, type: 2}
       BaseSpeed: 4.5
       SpeedScaleSprint: 1.2
       GunHolderPath: Gun Holders/Gun Holder - Blue
       GunHolderPosition: {x: 0, y: 0.5, z: 0}
-    - AnimatorController: {fileID: 9100000, guid: 04ee5060ef0750341a834adcea531187, type: 2}
+    - PrimaryWeaponType: 2
+      AnimatorController: {fileID: 9100000, guid: 04ee5060ef0750341a834adcea531187, type: 2}
       BaseSpeed: 4.5
       SpeedScaleSprint: 1.2
       GunHolderPath: Gun Holders/Gun Holder - Green
       GunHolderPosition: {x: 0, y: 0.5, z: 0}
-    - AnimatorController: {fileID: 9100000, guid: 0b2bd666bf56d7745beb4ad77268ecdc, type: 2}
+    - PrimaryWeaponType: 3
+      AnimatorController: {fileID: 9100000, guid: 0b2bd666bf56d7745beb4ad77268ecdc, type: 2}
       BaseSpeed: 4.5
       SpeedScaleSprint: 1.2
       GunHolderPath: Gun Holders/Gun Holder - Red
       GunHolderPosition: {x: 0, y: 0.5, z: 0}
-    - AnimatorController: {fileID: 9100000, guid: 7cafe2834056a764599a2319e4d0e919, type: 2}
+    - PrimaryWeaponType: 1
+      AnimatorController: {fileID: 9100000, guid: 7cafe2834056a764599a2319e4d0e919, type: 2}
       BaseSpeed: 4.5
       SpeedScaleSprint: 1.2
       GunHolderPath: Gun Holders/Gun Holder - Yellow

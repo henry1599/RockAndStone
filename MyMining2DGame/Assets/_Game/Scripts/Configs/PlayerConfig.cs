@@ -13,6 +13,13 @@ namespace DinoMining
         Red,
         Yellow
     }
+    public enum eGunType
+    {
+        Sniper,
+        SMG,
+        LMG,
+        AR
+    }
     [System.Serializable]
     public class PlayerStatDict : SerializableDictionaryBase<ePlayerType, PlayerStat> {}
     [CreateAssetMenu(menuName = "Scriptable Objects/PlayerConfig", fileName = "Player Config")]
@@ -30,6 +37,7 @@ namespace DinoMining
     [System.Serializable]
     public class PlayerStat
     {
+        public eGunType PrimaryWeaponType;
         public RuntimeAnimatorController AnimatorController;
         public float BaseSpeed = 10;
         public float SpeedScaleSprint = 1;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2644410800332818165}
   - component: {fileID: 1966516068785012465}
+  - component: {fileID: 6709784126098050848}
   m_Layer: 0
   m_Name: Gun Holder - Green
   m_TagString: Untagged
@@ -45,11 +46,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be162bcc17b13b2419b5412d41a0fc29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
+  PlayerType: 0
+  GunType: 0
+  ThisGun: {fileID: 6709784126098050848}
   GunRenderer: {fileID: 3725867156925950741}
   GunGraphic: {fileID: 5916675460237924515}
   leftSortingOrder: 4
   rightSortingOrder: 6
+--- !u!114 &6709784126098050848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4138196315875635456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e9207e900a559744accf8c950dfba92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletPrefab: {fileID: 0}
 --- !u!1 &7903125756991010628
 GameObject:
   m_ObjectHideFlags: 0
