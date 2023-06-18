@@ -17,7 +17,8 @@ namespace DinoMining
         public int Magazine;
         // * How many bullets shot per time
         public int BulletPerShot;
-        public float BulletSpeed;
+        public float MinBulletSpeed;
+        public float MaxBulletSpeed;
         public float MinShootingDistance;
         public float MaxShootingDistance;
         public float BaseSpread;

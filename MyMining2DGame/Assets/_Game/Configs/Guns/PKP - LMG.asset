@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5759196f6f6d9a842a34aa82f13d0142, type: 3}
   m_Name: PKP - LMG
   m_EditorClassIdentifier: 
-  RateOfFire: 34
+  RateOfFire: 30
   Damage: 10
   MaxAmmo: 3000
   Magazine: 200
   BulletPerShot: 1
-  BulletSpeed: 15
+  MinBulletSpeed: 15
+  MaxBulletSpeed: 25
   MinShootingDistance: 8
   MaxShootingDistance: 16
   BaseSpread: 2

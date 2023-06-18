@@ -28,7 +28,6 @@ namespace DinoMining
             this.minDistance = this.config.MinShootingDistance;
             this.maxDistance = this.config.MaxShootingDistance;
             this.stableSpreadRadius = this.config.StableSpread;
-            this.speed = this.config.BulletSpeed;
             this.rateOfFire = this.config.RateOfFire;
             this.timeBetweenShotValue = 1f / (float)this.rateOfFire;
             this.timeBetweenShot = this.timeBetweenShotValue;
@@ -78,6 +77,8 @@ namespace DinoMining
 
             var finalDirection = endPoint - (Vector2)this.shootingPoint.position;
             bulletInstance.gameObject.SetActive(true);
+
+            this.speed = Random.Range(this.config.MinBulletSpeed, this.config.MaxBulletSpeed);
             bulletInstance.Launch(finalDirection, endPoint, this.speed);
         }
         public Vector2 GetRandomPointOnCircle(Vector2 center, float radius)
