@@ -20,6 +20,12 @@ namespace DinoMining
     {
         public ePlayerType InitPlayerType;
         public PlayerStatDict Stats;
+        public PlayerGunHolder LoadGunHolder(ePlayerType type)
+        {
+            string path = Stats[type].GunHolderPath;
+            GameObject result = Resources.Load(path) as GameObject;
+            return result.GetComponent<PlayerGunHolder>();
+        }
     }
     [System.Serializable]
     public class PlayerStat
@@ -27,5 +33,7 @@ namespace DinoMining
         public RuntimeAnimatorController AnimatorController;
         public float BaseSpeed = 10;
         public float SpeedScaleSprint = 1;
+        public string GunHolderPath;
+        public Vector3 GunHolderPosition;
     }
 }

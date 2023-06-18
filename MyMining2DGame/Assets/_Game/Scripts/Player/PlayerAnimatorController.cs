@@ -19,9 +19,9 @@ namespace DinoMining
         {
             player = GetComponent<IPlayerController>();
             this.isAnimGathered = false;
-        }
-        protected virtual void Start()
-        {
+
+            if (player == null)
+                return;
             this.player.OnPlayerTypeChanged += HandlePlayerTypeChanged;
             this.player.OnMove += HandleMove;
             this.player.OnMine += HandleMine;

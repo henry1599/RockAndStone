@@ -17,6 +17,7 @@ namespace DinoMining
         private float baseSpeed;
         private float speedScaleSprint;
         private Camera mainCamera;
+        private PlayerGunHolder gunHolder;
         [SerializeField, Foldout("Status")] private bool canInteract;
         [SerializeField, Foldout("Status")] private bool canMine;
         [SerializeField, Foldout("Status")] private bool canShoot;
@@ -58,6 +59,7 @@ namespace DinoMining
             GatherInput();
 
             HandleFaceToMouse();
+            HandleGunFaceToMouse();
             HandleMove();
             HandleShoot();
             HandleInteract();
@@ -66,6 +68,13 @@ namespace DinoMining
         protected virtual void InitPlayer()
         {
             CurrentType = Config.InitPlayerType;
+            var holder = Config.LoadGunHolder(CurrentType);
+            if (holder != null)
+            {
+                var holderPosition = Config.Stats[CurrentType].GunHolderPosition;
+                this.gunHolder = Instantiate(holder, holderPosition, Quaternion.identity, transform);
+                this.gunHolder.Setup(CurrentType);
+            }
         }
         protected virtual void GatherPlayerStatByType(ePlayerType type)
         {
@@ -85,6 +94,17 @@ namespace DinoMining
         {
             OnPlayerTypeChanged?.Invoke(Config.Stats[newType]);
             GatherPlayerStatByType(newType);
+        }
+        protected virtual void HandleGunFaceToMouse()
+        {
+            var mousePosition = this.mainCamera.ScreenToWorldPoint(this.frameInput.MousePosScreenSpace);
+            var direction = mousePosition - this.gunHolder.transform.position;
+            var direction2D = (new Vector2(direction.x, direction.y)).normalized;
+
+            var angle = Mathf.Atan2(direction2D.y, direction2D.x) * Mathf.Rad2Deg;
+            this.gunHolder.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            this.gunHolder.Flip(mousePosition.x < this.gunHolder.transform.position.x);
         }
         protected virtual void HandleFaceToMouse()
         {
