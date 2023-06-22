@@ -7,12 +7,13 @@ namespace DinoMining
     public class Bullet : MonoBehaviour
     {
         [SerializeField] protected Rigidbody2D rb2D;
+        [SerializeField] protected GameObject explodeVfx;
         Vector2 endPoint;
         void Update()
         {
             var distanceToEndPoint = (transform.position.x - endPoint.x) * (transform.position.x - endPoint.x) + (transform.position.y - endPoint.y) * (transform.position.y - endPoint.y);
-            if (distanceToEndPoint <= 0.1f)
-                Destroy(gameObject);
+            if (distanceToEndPoint <= 0.2f)
+                DestroyOnEndLifeTime();
         }
         public virtual void Setup() {}
         void RotateTowardsDirection(Vector2 direction)
@@ -25,6 +26,11 @@ namespace DinoMining
             RotateTowardsDirection(direction);
             this.endPoint = endPoint;
             this.rb2D.velocity = direction.normalized * speed;
+        }
+        protected virtual void DestroyOnEndLifeTime()
+        {
+            Instantiate(this.explodeVfx, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
     }
 }

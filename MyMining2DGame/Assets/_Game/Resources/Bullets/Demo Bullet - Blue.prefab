@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5400099177280139753}
   - component: {fileID: 2276670441450552538}
   m_Layer: 6
-  m_Name: Demo Bullet - Green
+  m_Name: Demo Bullet - Blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -1400816319, guid: ed904c4cc435db64698bc3a0ee9e8561, type: 3}
+  m_Sprite: {fileID: 62401817, guid: db47b6a7f9f0ea9419b603af17f5c028, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,11 +97,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3091789784540199273}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09f1d732baa12d44da3ff9e897038c44, type: 3}
+  m_Script: {fileID: 11500000, guid: dd8b5e5c9a9c00b4688a682d15e33631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb2D: {fileID: -909458915841618537}
-  explodeVfx: {fileID: 2049698278465313186, guid: 225ed9024802f214398b7d8ae83a4282, type: 3}
+  explodeVfx: {fileID: 2049698278465313186, guid: 64a1742bfcf6acf4f80f354ba7760329, type: 3}
 --- !u!50 &-909458915841618537
 Rigidbody2D:
   serializedVersion: 4
@@ -181,7 +181,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.1
+  m_Time: 0.3
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -211,8 +211,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.24821573, b: 0.11698109, a: 1}
-      key1: {r: 1, g: 0.9063347, b: 0, a: 0}
+      key0: {r: 0.11764705, g: 0.5509099, b: 1, a: 1}
+      key1: {r: 0, g: 0.9999995, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
