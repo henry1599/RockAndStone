@@ -17,10 +17,10 @@ MonoBehaviour:
   MaxAmmo: 3000
   Magazine: 200
   BulletPerShot: 1
-  MinBulletSpeed: 15
-  MaxBulletSpeed: 35
-  MinShootingDistance: 4
-  MaxShootingDistance: 16
-  BaseSpread: 2.2
-  StableSpread: 0.3
-  StableTime: 2
+  MinBulletSpeed: 35
+  MaxBulletSpeed: 40
+  MinShootingDistance: 10
+  MaxShootingDistance: 20
+  BaseSpread: 1
+  StableSpread: 0.1
+  StableTime: 1

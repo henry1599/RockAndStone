@@ -69,14 +69,16 @@ namespace DinoMining
         {
             CurrentType = Config.InitPlayerType;
             var holder = Config.LoadGunHolder(CurrentType);
-            if (holder != null)
-            {
-                var holderPosition = Config.Stats[CurrentType].GunHolderPosition;
-                var gunType = Config.Stats[CurrentType].PrimaryWeaponType;
-                var gunConfig = Config.Stats[CurrentType].GunStat;
-                this.gunHolder = Instantiate(holder, holderPosition, Quaternion.identity, transform);
-                this.gunHolder.Setup(CurrentType, gunType, gunConfig);
-            }
+            if (holder == null)
+                return;
+            
+            var stat = Config.Stats[CurrentType];
+
+            var holderPosition = stat.GunHolderPosition;
+            var gunType = stat.PrimaryWeaponType;
+            var gunConfig = stat.GunStat;
+            this.gunHolder = Instantiate(holder, holderPosition, Quaternion.identity, transform);
+            this.gunHolder.Setup(CurrentType, gunType, gunConfig);
         }
         protected virtual void GatherPlayerStatByType(ePlayerType type)
         {
@@ -101,7 +103,7 @@ namespace DinoMining
         {
             var mousePosition = this.mainCamera.ScreenToWorldPoint(this.frameInput.MousePosScreenSpace);
             var direction = mousePosition - this.gunHolder.transform.position;
-            var direction2D = (new Vector2(direction.x, direction.y)).normalized;
+            var direction2D = ((Vector2)direction).normalized;
 
             var angle = Mathf.Atan2(direction2D.y, direction2D.x) * Mathf.Rad2Deg;
             this.gunHolder.transform.rotation = Quaternion.Euler(0, 0, angle);

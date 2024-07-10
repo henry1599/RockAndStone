@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f478072b626d7904ba64967aaed5b875, type: 3}
   m_Name: Player Config
   m_EditorClassIdentifier: 
-  InitPlayerType: 1
+  InitPlayerType: 0
   Stats:
     reorderableList:
       canAdd: 1
